@@ -14,7 +14,7 @@ cd $MODULE_ROOT/dist_bak
 for FILENAME in *.zip
 do
   echo "${FILENAME}"
-  cp -fv "${FILENAME}" "${MODULE_ROOT}/dist_upload/${FILENAME%.*}-${NOW}.${FILENAME##*.}"
+  cp -fv "${FILENAME}" "${MODULE_ROOT}/dist_upload/${FILENAME%.*}-${TRAVIS_BRANCH}-${NOW}.${FILENAME##*.}"
 done
 
 # Upload to S3
