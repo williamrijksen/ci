@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Install artifact uploader
+gem install travis-artifacts
+
 sudo mkdir -p /Library/Application\ Support/Titanium/sdks/
 
 # install py markdown
