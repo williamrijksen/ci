@@ -1,4 +1,5 @@
 #!/bin/bash
+cd $MODULE_ROOT
 
 # Install artifact uploader
 gem install travis-artifacts
