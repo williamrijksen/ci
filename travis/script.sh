@@ -12,9 +12,7 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   cp $MODULE_ROOT/build.properties build.properties
 
   # if lib folder doesn't exist, create it
-  if [ -d "lib" ]; then
-    mkdir lib
-  fi
+  mkdir -p lib
 
   ant clean
   ant
