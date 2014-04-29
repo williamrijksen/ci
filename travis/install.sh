@@ -39,7 +39,7 @@ echo
 cd $MODULE_ROOT
 
 # Install artifact uploader
-gem install travis-artifacts
+gem install travis-artifacts --no-ri --no-rdoc
 
 sudo mkdir -p ~/Library/Application\ Support/Titanium/sdks/
 
@@ -52,6 +52,7 @@ brew install ant
 
 # Android SDK seems to require newer version of SDK
 npm install node-jpath
+curl "http://api.appcelerator.net/p/v1/release-list" > releases.json
 export DOWNLOAD_URL=`node -pe "var jpath=require(\"node-jpath\");var jsonData = JSON.parse(process.argv[1]); jpath.filter(jsonData, \"releases[version=$TITANIUM_SDK && os=osx]\")[0].url" "$(cat releases.json)"`
 sudo wget $DOWNLOAD_URL -O ~/Library/Application\ Support/Titanium/mobilesdk-$TITANIUM_SDK-osx.zip
 cd ~/Library/Application\ Support/Titanium/
