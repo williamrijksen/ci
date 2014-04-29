@@ -51,7 +51,9 @@ sudo easy_install markdown
 brew install ant
 
 # Android SDK seems to require newer version of SDK
-sudo wget http://api.appcelerator.net/p/v1/release-download?token=34yycjh6 -O ~/Library/Application\ Support/Titanium/mobilesdk-$TITANIUM_SDK-osx.zip
+npm install node-jpath
+export DOWNLOAD_URL=`node -pe "var jpath=require(\"node-jpath\");var jsonData = JSON.parse(process.argv[1]); jpath.filter(jsonData, \"releases[version=$TITANIUM_SDK && os=osx]\")[0].url" "$(cat releases.json)"`
+sudo wget $DOWNLOAD_URL -O ~/Library/Application\ Support/Titanium/mobilesdk-$TITANIUM_SDK-osx.zip
 cd ~/Library/Application\ Support/Titanium/
 sudo unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
 
