@@ -1,5 +1,6 @@
 #!/bin/bash
 # Argument = -sdk 3.1.2.GA
+OPTIND=1    # also remember to initialize your flags and other variables
 
 usage()
 {
@@ -32,20 +33,19 @@ do
      esac
 done
 
-echo
-echo "Building with version $TITANIUM_SDK of Titanium"
-echo
+export TITANIUM_ROOT="~/Library/Application\ Support/Titanium"
+mkdir -p "$TITANIUM_ROOT/sdks/"
 
 echo
-echo "Entering $MODULE_ROOT"
+echo "TITANIUM_SDK=$TITANIUM_SDK"
+echo "TITANIUM_ROOT=$TITANIUM_ROOT"
+echo "MODULE_ROOT=$MODULE_ROOT"
 echo
 
 cd $MODULE_ROOT
 
 # Install artifact uploader
 gem install travis-artifacts --no-ri --no-rdoc
-
-mkdir -p ~/Library/Application\ Support/Titanium/sdks/
 
 # install py markdown
 export PYTHONPATH=${PYTHONPATH}:$PWD/support
@@ -55,17 +55,25 @@ sudo easy_install markdown
 brew install ant
 
 # Android SDK seems to require newer version of SDK
-npm install node-jpath
-curl "http://api.appcelerator.net/p/v1/release-list" > releases.json
-export DOWNLOAD_URL=`node -pe "var jpath=require(\"node-jpath\");var jsonData = JSON.parse(process.argv[1]); jpath.filter(jsonData, \"releases[version=$TITANIUM_SDK && os=osx]\")[0].url" "$(cat releases.json)"`
-
 echo
-echo "Downloading sdk from $DOWNLOAD_URL"
+echo "Checking existance of $TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
 echo
 
-wget $DOWNLOAD_URL -O ~/Library/Application\ Support/Titanium/mobilesdk-$TITANIUM_SDK-osx.zip
-cd ~/Library/Application\ Support/Titanium/
-unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
+if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
+
+  npm install node-jpath
+  curl "http://api.appcelerator.net/p/v1/release-list" > releases.json
+  export DOWNLOAD_URL=`node -pe "var jpath=require(\"node-jpath\");var jsonData = JSON.parse(process.argv[1]); jpath.filter(jsonData, \"releases[version=$TITANIUM_SDK && os=osx]\")[0].url" "$(cat releases.json)"`
+
+  echo
+  echo "Downloading sdk from $DOWNLOAD_URL"
+  echo
+
+  wget $DOWNLOAD_URL -O "$TITANIUM_ROOT/mobilesdk-$TITANIUM_SDK-osx.zip"
+  cd "$TITANIUM_ROOT"
+  unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
+
+fi
 
 # IOS uses v.1.6
 #sudo wget http://api.appcelerator.net/p/v1/release-download?token=y4qAVWK3 -O /Library/Application\ Support/Titanium/mobilesdk-1.6.0-osx.zip
@@ -73,11 +81,19 @@ unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
 #sudo unzip -o mobilesdk-1.6.0-osx.zip
 
 # Install Android SDK
-cd ~/Library/Application\ Support/Titanium/sdks/
-wget http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip
-unzip -o android-sdk_r22.6.2-macosx.zip
-export ANDROID_HOME=${PWD}/android-sdk-macosx
+echo
+echo "Checking existance of $TITANIUM_ROOT/sdks/android-sdk-macosx"
+echo
 
+if [ ! -d "$TITANIUM_ROOT/sdks/android-sdk-macosx" ]; then
+
+  cd "$TITANIUM_ROOT/sdks/"
+  wget http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip
+  unzip -o android-sdk_r22.6.2-macosx.zip
+
+fi
+
+export ANDROID_HOME=${PWD}/android-sdk-macosx
 export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 # Install required Android components.
@@ -91,11 +107,18 @@ cd $MODULE_ROOT
 #- export ANDROID_NDK=${PWD}/android-ndk-r9d
 
 # NDK r8c
-wget http://dl.google.com/android/ndk/android-ndk-r8c-darwin-x86.tar.bz2
-tar xzf android-ndk-r8c-darwin-x86.tar.bz2
+echo
+echo "Checking existance of $MODULE_ROOT/android-ndk-r8c"
+echo
+
+if [ ! -d "$MODULE_ROOT/android-ndk-r8c" ]; then
+  wget http://dl.google.com/android/ndk/android-ndk-r8c-darwin-x86.tar.bz2
+  tar xzf android-ndk-r8c-darwin-x86.tar.bz2
+fi
+
 export ANDROID_NDK=${PWD}/android-ndk-r8c
 
 # Write out properties file
-echo "titanium.platform=~/Library/Application Support/Titanium/mobilesdk/osx/$TITANIUM_SDK/android" >> build.properties
-echo "android.platform=~/Library/Application Support/Titanium/sdks/android-sdk-macosx/platforms/android-10" >> build.properties
-echo "google.apis=~/Library/Application Support/Titanium/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-10" >> build.properties
+echo "titanium.platform=$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK/android" >> build.properties
+echo "android.platform=$TITANIUM_ROOT/sdks/android-sdk-macosx/platforms/android-10" >> build.properties
+echo "google.apis=$TITANIUM_ROOT/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-10" >> build.properties
