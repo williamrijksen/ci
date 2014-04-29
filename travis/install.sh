@@ -33,7 +33,7 @@ do
      esac
 done
 
-export TITANIUM_ROOT="~/Library/Application\ Support/Titanium"
+export TITANIUM_ROOT="$HOME/Library/Application Support/Titanium"
 mkdir -p "$TITANIUM_ROOT/sdks/"
 
 echo
@@ -58,6 +58,8 @@ brew install ant
 echo
 echo "Checking existance of $TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
 echo
+
+ls "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
 
 if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
 
