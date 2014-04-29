@@ -36,12 +36,16 @@ echo
 echo "Building with version $TITANIUM_SDK of Titanium"
 echo
 
+echo
+echo "Entering $MODULE_ROOT"
+echo
+
 cd $MODULE_ROOT
 
 # Install artifact uploader
 gem install travis-artifacts --no-ri --no-rdoc
 
-sudo mkdir -p ~/Library/Application\ Support/Titanium/sdks/
+mkdir -p ~/Library/Application\ Support/Titanium/sdks/
 
 # install py markdown
 export PYTHONPATH=${PYTHONPATH}:$PWD/support
@@ -59,9 +63,9 @@ echo
 echo "Downloading sdk from $DOWNLOAD_URL"
 echo
 
-sudo wget $DOWNLOAD_URL -O ~/Library/Application\ Support/Titanium/mobilesdk-$TITANIUM_SDK-osx.zip
+wget $DOWNLOAD_URL -O ~/Library/Application\ Support/Titanium/mobilesdk-$TITANIUM_SDK-osx.zip
 cd ~/Library/Application\ Support/Titanium/
-sudo unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
+unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
 
 # IOS uses v.1.6
 #sudo wget http://api.appcelerator.net/p/v1/release-download?token=y4qAVWK3 -O /Library/Application\ Support/Titanium/mobilesdk-1.6.0-osx.zip
@@ -70,8 +74,8 @@ sudo unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
 
 # Install Android SDK
 cd ~/Library/Application\ Support/Titanium/sdks/
-sudo wget http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip
-sudo unzip -o android-sdk_r22.6.2-macosx.zip
+wget http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip
+unzip -o android-sdk_r22.6.2-macosx.zip
 export ANDROID_HOME=${PWD}/android-sdk-macosx
 
 export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
