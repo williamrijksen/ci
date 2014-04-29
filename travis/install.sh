@@ -84,6 +84,6 @@ tar xzf android-ndk-r8c-darwin-x86.tar.bz2
 export ANDROID_NDK=${PWD}/android-ndk-r8c
 
 # Write out properties file
-echo "titanium.platform=/Library/Application Support/Titanium/mobilesdk/osx/$TITANIUM_SDK/android" >> build.properties
-echo "android.platform=/Library/Application Support/Titanium/sdks/android-sdk-macosx/platforms/android-10" >> build.properties
-echo "google.apis=/Library/Application Support/Titanium/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-10" >> build.properties
+echo "titanium.platform=~/Library/Application Support/Titanium/mobilesdk/osx/$TITANIUM_SDK/android" >> build.properties
+echo "android.platform=~/Library/Application Support/Titanium/sdks/android-sdk-macosx/platforms/android-10" >> build.properties
+echo "google.apis=~/Library/Application Support/Titanium/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-10" >> build.properties
