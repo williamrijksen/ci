@@ -54,6 +54,11 @@ brew install ant
 npm install node-jpath
 curl "http://api.appcelerator.net/p/v1/release-list" > releases.json
 export DOWNLOAD_URL=`node -pe "var jpath=require(\"node-jpath\");var jsonData = JSON.parse(process.argv[1]); jpath.filter(jsonData, \"releases[version=$TITANIUM_SDK && os=osx]\")[0].url" "$(cat releases.json)"`
+
+echo
+echo "Downloading sdk from $DOWNLOAD_URL"
+echo
+
 sudo wget $DOWNLOAD_URL -O ~/Library/Application\ Support/Titanium/mobilesdk-$TITANIUM_SDK-osx.zip
 cd ~/Library/Application\ Support/Titanium/
 sudo unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
