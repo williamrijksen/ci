@@ -52,6 +52,7 @@ export PYTHONPATH=${PYTHONPATH}:$PWD/support
 sudo easy_install markdown
 
 # install ANT
+brew update
 brew install ant
 
 # Android SDK seems to require newer version of SDK
