@@ -63,17 +63,8 @@ ls "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
 
 if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
 
-  npm install node-jpath
-  curl "http://api.appcelerator.net/p/v1/release-list" > releases.json
-  export DOWNLOAD_URL=`node -pe "var jpath=require(\"node-jpath\");var jsonData = JSON.parse(process.argv[1]); jpath.filter(jsonData, \"releases[version=$TITANIUM_SDK && os=osx]\")[0].url" "$(cat releases.json)"`
-
-  echo
-  echo "Downloading sdk from $DOWNLOAD_URL"
-  echo
-
-  wget $DOWNLOAD_URL -O "$TITANIUM_ROOT/mobilesdk-$TITANIUM_SDK-osx.zip"
-  cd "$TITANIUM_ROOT"
-  unzip -o  mobilesdk-$TITANIUM_SDK-osx.zip
+  sudo npm install -g titanium
+  titanium sdk install $TITANIUM_SDK
 
 fi
 
