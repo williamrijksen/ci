@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # create a local cloned repo
-git clone https://github.com/appcelerator/hyperloop.git
+git clone https://github.com/ingo/hyperloop.git
 
 # change to the new directory
 cd hyperloop
