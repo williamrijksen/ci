@@ -4,6 +4,7 @@ hyperloop package module --cflags=-DHL_DISABLE_CRASH --platform=ios --src=$MODUL
 
 # create a local cloned repo
 git clone https://github.com/appcelerator/titanium_mobile.git
+sudo easy_install pyyaml
 python ./titanium_mobile/apidoc/docgen.py -f modulehtml -o $MODULE_ROOT/build/apidoc/ -e --css styles.css  $MODULE_ROOT/apidoc/
 
 # Navigate to the ios directory of the module project and execute the following commands
