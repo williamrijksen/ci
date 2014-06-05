@@ -66,7 +66,7 @@ if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
 
   sudo npm install -g titanium
   titanium login travisci@appcelerator.com travisci
-  titanium sdk install $TITANIUM_SDK
+  titanium sdk install $TITANIUM_SDK --no-progress-bars
   TITANIUM_SDK=`ls "$TITANIUM_ROOT/mobilesdk/osx/"`
 
 fi
