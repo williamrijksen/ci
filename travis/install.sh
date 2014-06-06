@@ -58,22 +58,6 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   brew update
   brew install ant
 
-  # Android SDK seems to require newer version of SDK
-  echo
-  echo "Checking existance of $TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
-  echo
-
-  ls "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
-
-  if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
-
-    sudo npm install -g titanium
-    titanium login travisci@appcelerator.com travisci
-    titanium sdk install $TITANIUM_SDK --no-progress-bars
-    TITANIUM_SDK=`ls "$TITANIUM_ROOT/mobilesdk/osx/"`
-
-  fi
-
   # Install Android SDK
   echo
   echo "Checking existance of $TITANIUM_ROOT/sdks/android-sdk-macosx"
@@ -113,3 +97,20 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   echo "android.platform=$TITANIUM_ROOT/sdks/android-sdk-macosx/platforms/android-10" >> build.properties
   echo "google.apis=$TITANIUM_ROOT/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-10" >> build.properties
 fi
+
+# Android SDK seems to require newer version of SDK
+echo
+echo "Checking existance of $TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
+echo
+
+sudo npm install -g titanium
+titanium login travisci@appcelerator.com travisci
+
+if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
+
+   titanium sdk install $TITANIUM_SDK --no-progress-bars
+   TITANIUM_SDK=`ls "$TITANIUM_ROOT/mobilesdk/osx/"`
+
+fi
+
+titanium info
