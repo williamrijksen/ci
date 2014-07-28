@@ -93,7 +93,8 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   export ANDROID_NDK=${PWD}/android-ndk-r8c
 
   # Write out properties file
-  echo "titanium.platform=$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK/android" >> build.properties
+ 
+   echo "titanium.platform=$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK/android" > build.properties
   echo "android.platform=$TITANIUM_ROOT/sdks/android-sdk-macosx/platforms/android-10" >> build.properties
   echo "google.apis=$TITANIUM_ROOT/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-10" >> build.properties
 fi
