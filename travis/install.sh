@@ -51,6 +51,10 @@ gem install travis-artifacts --no-ri --no-rdoc
 export PYTHONPATH=${PYTHONPATH}:$PWD/support
 sudo easy_install markdown
 
+sudo npm install -g titanium
+titanium login travisci@appcelerator.com travisci
+
+
 # If Android module exists, build
 if [ -d "$MODULE_ROOT/android/" ]; then
 
@@ -66,17 +70,28 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   if [ ! -d "$TITANIUM_ROOT/sdks/android-sdk-macosx" ]; then
 
     cd "$TITANIUM_ROOT/sdks/"
-    wget http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip
-    unzip -o android-sdk_r22.6.2-macosx.zip
+    wget http://dl.google.com/android/android-sdk_r23.0.2-macosx.zip
+    unzip -qq -o android-sdk_r23.0.2-macosx.zip
 
   fi
 
   export ANDROID_HOME=${PWD}/android-sdk-macosx
   export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  
+  echo "Installing and configuring Android SDK + Tools"
 
   # Install required Android components.
-  echo "y" | android update sdk --filter platform-tools,android-8,android-10,addon-google_apis-google-10,extra-android-support,$ANDROID_SDKS --no-ui --force
-
+  echo yes | android -s update sdk --no-ui --all --filter \
+    tools
+  echo yes | android -s update sdk --no-ui --all --filter \
+    platform-tools
+  echo yes | android -s update sdk --no-ui --all --filter \
+    extra-android-support 
+  echo yes | android -s update sdk --no-ui --all --filter \
+    android-10
+  echo yes | android -s update sdk --no-ui --all --filter \
+    addon-google_apis-google-10
+    
   # Install require Android NDK
   cd $MODULE_ROOT
 
@@ -94,9 +109,11 @@ if [ -d "$MODULE_ROOT/android/" ]; then
 
   # Write out properties file
  
-   echo "titanium.platform=$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK/android" > build.properties
+  echo "titanium.platform=$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK/android" > build.properties
   echo "android.platform=$TITANIUM_ROOT/sdks/android-sdk-macosx/platforms/android-10" >> build.properties
   echo "google.apis=$TITANIUM_ROOT/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-10" >> build.properties
+  
+  titanium config android.sdkPath $ANDROID_HOME
 fi
 
 # Android SDK seems to require newer version of SDK
@@ -104,8 +121,7 @@ echo
 echo "Checking existance of $TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
 echo
 
-sudo npm install -g titanium
-titanium login travisci@appcelerator.com travisci
+
 
 if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
 
