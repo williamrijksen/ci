@@ -88,6 +88,8 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   echo yes | android -s update sdk --no-ui --all --filter \
     extra-android-support 
   echo yes | android -s update sdk --no-ui --all --filter \
+    android-8
+  echo yes | android -s update sdk --no-ui --all --filter \
     android-10
   echo yes | android -s update sdk --no-ui --all --filter \
     addon-google_apis-google-10
