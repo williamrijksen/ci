@@ -123,7 +123,7 @@ echo
 echo "Checking existance of $TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
 echo
 
-
+titanium sdk install "3.4.0.GA" --no-progress-bars
 
 if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
 
