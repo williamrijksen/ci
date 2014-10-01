@@ -18,7 +18,7 @@ EOF
 
 export TITANIUM_SDK="2.1.3.GA"
 export TITANIUM_ANDROID_API="10"
-while getopts “hs:” OPTION
+while getopts “hsa:” OPTION
 do
      case $OPTION in
          h)
