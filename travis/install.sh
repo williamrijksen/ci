@@ -12,10 +12,12 @@ Installs various pre-requisites for building a module.
 OPTIONS:
    -h      Show this message
    -s      Version of Titanium SDK to use. If not specified, uses 2.1.3.GA
+   -a      Version of Android SDK to install. If not specified, used 10
 EOF
 }
 
 export TITANIUM_SDK="2.1.3.GA"
+export TITANIUM_ANDROID_API="10"
 while getopts “hs:” OPTION
 do
      case $OPTION in
@@ -25,6 +27,9 @@ do
              ;;
          s)
              TITANIUM_SDK=$OPTARG
+             ;;
+         a)
+             TITANIUM_ANDROID_API=$OPTARG
              ;;
          ?)
              usage
@@ -38,6 +43,7 @@ mkdir -p "$TITANIUM_ROOT/sdks/"
 
 echo
 echo "TITANIUM_SDK=$TITANIUM_SDK"
+echo "TITANIUM_ANDROID_API=$TITANIUM_ANDROID_API"
 echo "TITANIUM_ROOT=$TITANIUM_ROOT"
 echo "MODULE_ROOT=$MODULE_ROOT"
 echo
@@ -90,9 +96,9 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   echo yes | android -s update sdk --no-ui --all --filter \
     android-8
   echo yes | android -s update sdk --no-ui --all --filter \
-    android-10
+    android-$TITANIUM_ANDROID_API
   echo yes | android -s update sdk --no-ui --all --filter \
-    addon-google_apis-google-10
+    addon-google_apis-google-$TITANIUM_ANDROID_API
     
   # Install require Android NDK
   cd $MODULE_ROOT
@@ -112,8 +118,8 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   # Write out properties file
  
   echo "titanium.platform=$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK/android" > build.properties
-  echo "android.platform=$TITANIUM_ROOT/sdks/android-sdk-macosx/platforms/android-10" >> build.properties
-  echo "google.apis=$TITANIUM_ROOT/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-10" >> build.properties
+  echo "android.platform=$TITANIUM_ROOT/sdks/android-sdk-macosx/platforms/android-$TITANIUM_ANDROID_API" >> build.properties
+  echo "google.apis=$TITANIUM_ROOT/sdks/android-sdk-macosx/add-ons/addon-google_apis-google-$TITANIUM_ANDROID_API" >> build.properties
   
   titanium config android.sdkPath $ANDROID_HOME
 fi
