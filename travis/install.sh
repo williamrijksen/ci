@@ -38,6 +38,10 @@ do
      esac
 done
 
+# Need to install jq to process the JSON
+brew update
+brew install jq # process JSON 
+
 export TITANIUM_ROOT=`ti sdk list -o json | jq -r '.defaultInstallLocation'`
 mkdir -p "$TITANIUM_ROOT/sdks/"
 
@@ -64,11 +68,6 @@ fi
 # install py markdown
 export PYTHONPATH=${PYTHONPATH}:$PWD/support
 sudo easy_install markdown
-
-
-
-brew update
-brew install jq # process JSON 
 
 # If Android module exists, build
 if [ -d "$MODULE_ROOT/android/" ]; then
