@@ -11,6 +11,8 @@ if [ -d "$MODULE_ROOT/ios/" ]; then
   echo
 
   cd $MODULE_ROOT/ios/
+  cp $MODULE_ROOT/titanium.xcconfig titanium.xcconfig
+  cat titanium.xcconfig
   ./build.py
 
   let STATUS=$?
