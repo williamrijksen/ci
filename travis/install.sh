@@ -17,7 +17,7 @@ EOF
 }
 
 export TITANIUM_SDK_VERSION="3.4.0.GA"
-export TITANIUM_ANDROID_API="10"
+export TITANIUM_ANDROID_API="14"
 while getopts ":h:s:a:" OPTION
 do
      case $OPTION in
@@ -49,14 +49,6 @@ titanium sdk install latest --no-progress-bars
 export TITANIUM_ROOT=`ti sdk list -o json | jq -r '.defaultInstallLocation'`
 export TITANIUM_SDK=`ti sdk list -o json | jq -r '.installed[.activeSDK]'`
 mkdir -p "$TITANIUM_ROOT/sdks/"
-
-echo
-echo "TITANIUM_SDK=$TITANIUM_SDK"
-echo "TITANIUM_SDK_VERSION=$TITANIUM_SDK_VERSION"
-echo "TITANIUM_ANDROID_API=$TITANIUM_ANDROID_API"
-echo "TITANIUM_ROOT=$TITANIUM_ROOT"
-echo "MODULE_ROOT=$MODULE_ROOT"
-echo
 
 # Install artifact uploader
 TRAVIS_GEM=`gem list travis-artifacts | grep "travis"`
@@ -130,9 +122,9 @@ if [ -d "$MODULE_ROOT/android/" ]; then
 
   # Write out properties file
  
-  echo "titanium.platform=$TITANIUM_SDK/android" > build.properties
-  echo "android.platform=$ANDROID_HOME/platforms/android-$TITANIUM_ANDROID_API" >> build.properties
-  echo "google.apis=$ANDROID_HOME/add-ons/addon-google_apis-google-$TITANIUM_ANDROID_API" >> build.properties
+  echo "titanium.platform=$TITANIUM_SDK/android" > $MODULE_ROOT/build.properties
+  echo "android.platform=$ANDROID_HOME/platforms/android-$TITANIUM_ANDROID_API" >> $MODULE_ROOT/build.properties
+  echo "google.apis=$ANDROID_HOME/add-ons/addon-google_apis-google-$TITANIUM_ANDROID_API" >> $MODULE_ROOT/build.properties
 
 fi
 
@@ -140,10 +132,10 @@ fi
 if [ -d "$MODULE_ROOT/ios/" ]; then
   # Write out properties file
  
-  echo "TITANIUM_SDK = $TITANIUM_SDK" > titanium.xcconfig
-  echo "TITANIUM_BASE_SDK = '$(TITANIUM_SDK)/iphone/include'" > titanium.xcconfig
-  echo "TITANIUM_BASE_SDK2 = '$(TITANIUM_SDK)/iphone/include/TiCore'" > titanium.xcconfig
-  echo "HEADER_SEARCH_PATHS= $(TITANIUM_BASE_SDK) $(TITANIUM_BASE_SDK2)" > titanium.xcconfig
+  echo "TITANIUM_SDK = $TITANIUM_SDK" > $MODULE_ROOT/titanium.xcconfig
+  echo "TITANIUM_BASE_SDK = '$(TITANIUM_SDK)/iphone/include'" > $MODULE_ROOT/titanium.xcconfig
+  echo "TITANIUM_BASE_SDK2 = '$(TITANIUM_SDK)/iphone/include/TiCore'" > $MODULE_ROOT/titanium.xcconfig
+  echo "HEADER_SEARCH_PATHS= $(TITANIUM_BASE_SDK) $(TITANIUM_BASE_SDK2)" > $MODULE_ROOT/titanium.xcconfig
 
 fi
 
@@ -152,6 +144,6 @@ echo
 echo "Installing $TITANIUM_SDK_VERSION"
 echo
 
-titanium sdk install $TITANIUM_SDK --no-progress-bars
+titanium sdk install $TITANIUM_SDK_VERSION --no-progress-bars
 
 titanium info
