@@ -42,14 +42,13 @@ done
 brew update
 brew install jq # process JSON 
 
-export TITANIUM_ROOT=`ti sdk list -o json | jq -r '.defaultInstallLocation'`
-mkdir -p "$TITANIUM_ROOT/sdks/"
-
 sudo npm install -g titanium
 titanium login travisci@appcelerator.com travisci
 titanium sdk install latest --no-progress-bars
 
+export TITANIUM_ROOT=`ti sdk list -o json | jq -r '.defaultInstallLocation'`
 export TITANIUM_SDK=`ti sdk list -o json | jq -r '.installed[.activeSDK]'`
+mkdir -p "$TITANIUM_ROOT/sdks/"
 
 echo
 echo "TITANIUM_SDK=$TITANIUM_SDK"
