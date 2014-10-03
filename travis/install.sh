@@ -16,7 +16,7 @@ OPTIONS:
 EOF
 }
 
-export TITANIUM_SDK="2.1.3.GA"
+export TITANIUM_SDK="3.4.0.GA"
 export TITANIUM_ANDROID_API="10"
 while getopts ":h:s:a:" OPTION
 do
@@ -60,12 +60,15 @@ sudo easy_install markdown
 sudo npm install -g titanium
 titanium login travisci@appcelerator.com travisci
 
+titanium sdk install latest --no-progress-bars
+
+brew update
+brew install jq # process JSON 
 
 # If Android module exists, build
 if [ -d "$MODULE_ROOT/android/" ]; then
 
   # install ANT
-  brew update
   brew install ant
 
   # Install Android SDK
@@ -73,15 +76,18 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   echo "Checking existance of $TITANIUM_ROOT/sdks/android-sdk-macosx"
   echo
 
-  if [ ! -d "$TITANIUM_ROOT/sdks/android-sdk-macosx" ]; then
+  ANDROID_HOME=`ti info -t android -o json | jq -r '.android.sdk.path'`
+  
+  if [ ! -d "$ANDROID_HOME" ]; then
 
     cd "$TITANIUM_ROOT/sdks/"
     wget http://dl.google.com/android/android-sdk_r23.0.2-macosx.zip
     unzip -qq -o android-sdk_r23.0.2-macosx.zip
+    ANDROID_HOME=${PWD}/android-sdk-macosx
 
   fi
 
-  export ANDROID_HOME=${PWD}/android-sdk-macosx
+  export ANDROID_HOME
   export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
   
   echo "Installing and configuring Android SDK + Tools"
@@ -102,20 +108,21 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   echo yes | android -s update sdk --no-ui --all --filter \
     addon-google_apis-google-$TITANIUM_ANDROID_API
     
-  # Install require Android NDK
-  cd $MODULE_ROOT
-
   # NDK r8c
   echo
   echo "Checking existance of $MODULE_ROOT/android-ndk-r8c"
   echo
 
-  if [ ! -d "$MODULE_ROOT/android-ndk-r8c" ]; then
+  ANDROID_NDK=`ti info -t android -o json | jq -r '.android.ndk.path'`
+
+  if [ ! -d "$ANDROID_NDK" ]; then
+    cd $MODULE_ROOT
     wget http://dl.google.com/android/ndk/android-ndk-r8c-darwin-x86.tar.bz2
     tar xzf android-ndk-r8c-darwin-x86.tar.bz2
+    ANDROID_NDK=${PWD}/android-ndk-r8c
   fi
 
-  export ANDROID_NDK=${PWD}/android-ndk-r8c
+  export ANDROID_NDK
 
   # Write out properties file
  
@@ -130,8 +137,6 @@ fi
 echo
 echo "Checking existance of $TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK"
 echo
-
-titanium sdk install "3.4.0.GA" --no-progress-bars
 
 if [ ! -d "$TITANIUM_ROOT/mobilesdk/osx/$TITANIUM_SDK" ]; then
 
