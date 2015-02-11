@@ -27,7 +27,7 @@ if [ -d "$MODULE_ROOT/ios/" ]; then
 
 		#Install module
 		echo "Installing module"
-		ti sdk install $MODULE_ID*
+		ti sdk install $MODULE_ID* -q
 
 		#This already happens in the previous script
 		#echo "Downloading latest SDK"
@@ -36,15 +36,25 @@ if [ -d "$MODULE_ROOT/ios/" ]; then
 
 		#Create new application
 		echo "Creating new application"
-		ti create -t app -p ios -d "./TestModule" -n "TestModule" --id "com.appc.TestModule" -u "http://appcelerator.com" --force
+		ti create -t app -p ios -d "./TestModule" -n "TestModule" --id "com.appc.TestModule" -u "http://appcelerator.com" --force -q
 		cd ./TestModule/TestModule
 
 		#Append module to manifest
 		echo "Add module to application"
 		sed -i "" 's/<modules>/&<module version="'$MODULE_VERSION'">'$MODULE_ID'<\/module>/g' tiapp.xml
 
-		#echo "Copying module example"
-		#cp -r $HOME/Library/Application\ Support/Titanium/modules/iphone/$MODULE_ID/$MODULE_VERSION/example/. ./Resources/
+		#Configure app.js
+		MODULE_EXAMPLE=$HOME/Library/Application\ Support/Titanium/modules/iphone/$MODULE_ID/$MODULE_VERSION/example/
+		if [ -e "$MODULE_EXAMPLE/app.js" ]; then
+			echo "Copying module example"
+			cp -r "$MODULE_EXAMPLE." ./Resources/
+		else
+			#Append module to app.js
+			echo "Append module require to app.js"
+			cd ./Resources/
+			echo -e "var moduleToTest = require('"$MODULE_ID"');\n$(cat app.js)" > app.js
+			cd ../
+		fi
 
 		#Append module to app.js
 		cd ./Resources/
@@ -53,7 +63,7 @@ if [ -d "$MODULE_ROOT/ios/" ]; then
 
 		#Build application but do not run simulator
 		echo "Build application"
-		ti build -b -p ios -d "./"
+		ti build -b -p ios -d "./" —log-level info
 	
 		let STATUS=$?
 		
