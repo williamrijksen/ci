@@ -16,7 +16,7 @@ OPTIONS:
 EOF
 }
 
-export TITANIUM_SDK_VERSION="3.4.0.GA"
+export TITANIUM_SDK_VERSION="3.5.0.GA"
 export TITANIUM_ANDROID_API="14"
 while getopts ":h:s:a:" OPTION
 do
@@ -150,12 +150,5 @@ if [ -d "$MODULE_ROOT/ios/" ]; then
   echo "HEADER_SEARCH_PATHS= \$(TITANIUM_BASE_SDK) \$(TITANIUM_BASE_SDK2) \$(TITANIUM_BASE_SDK3) \$(TITANIUM_BASE_SDK4) \${PROJECT_DIR}/**" >> $MODULE_ROOT/titanium.xcconfig
   
 fi
-
-# Android SDK seems to require newer version of SDK
-echo
-echo "Installing $TITANIUM_SDK_VERSION"
-echo
-
-titanium sdk install $TITANIUM_SDK_VERSION --no-progress-bars
 
 titanium info
