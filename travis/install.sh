@@ -121,6 +121,15 @@ if [ -d "$MODULE_ROOT/android/" ]; then
 
   export ANDROID_NDK
 
+  # Install Java 6 if necessary for get around http://bugs.java.com/bugdatabase/view_bug.do?bug_id=7131356
+  java_installed=$( grep "commonjs:\s*true" -c  $MODULE_ROOT/android/manifest )
+  if [ $java_installed -gt 0 ]; then
+    cd "$MODULE_ROOT"
+    wget http://support.apple.com/downloads/DL1572/en_US/JavaForOSX2014-001.dmg
+    MOUNTDIR=`hdiutil mount JavaForOSX2014-001.dmg | tail -1 | sed -n 's/.*\(\/Volumes\/Java.*\)/\1/p'`
+    sudo installer -pkg "${MOUNTDIR}/JavaForOSX.pkg" -target /
+  fi
+  
   # Write out properties file
  
   echo "titanium.platform=$TITANIUM_SDK/android" > $MODULE_ROOT/build.properties
