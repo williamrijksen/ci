@@ -45,6 +45,12 @@ sudo npm install -g titanium
 titanium login travisci@appcelerator.com travisci
 titanium sdk install latest --no-progress-bars
 
+# Android SDK seems to require newer version of SDK		
+echo
+echo "Installing $TITANIUM_SDK_VERSION"		
+echo
+titanium sdk install -d $TITANIUM_SDK_VERSION --no-progress-bars		
+
 export TITANIUM_ROOT=`ti sdk list -o json | jq -r '.defaultInstallLocation'`
 export TITANIUM_SDK=`ti sdk list -o json | jq -r '.installed[.activeSDK]'`
 mkdir -p "$TITANIUM_ROOT/sdks/"
@@ -149,11 +155,5 @@ if [ -d "$MODULE_ROOT/ios/" ]; then
   echo "HEADER_SEARCH_PATHS= \$(TITANIUM_BASE_SDK) \$(TITANIUM_BASE_SDK2) \$(TITANIUM_BASE_SDK3) \$(TITANIUM_BASE_SDK4) \${PROJECT_DIR}/**" >> $MODULE_ROOT/titanium.xcconfig
   
 fi
-
-# Android SDK seems to require newer version of SDK		
-echo
-echo "Installing $TITANIUM_SDK_VERSION"		
-echo
-titanium sdk install $TITANIUM_SDK_VERSION --no-progress-bars		
 
 titanium info
