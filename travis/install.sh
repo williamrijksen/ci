@@ -150,4 +150,10 @@ if [ -d "$MODULE_ROOT/ios/" ]; then
   
 fi
 
+# Android SDK seems to require newer version of SDK		
+echo
+echo "Installing $TITANIUM_SDK_VERSION"		
+echo
+titanium sdk install $TITANIUM_SDK_VERSION --no-progress-bars		
+
 titanium info
