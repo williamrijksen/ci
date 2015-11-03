@@ -16,8 +16,8 @@ OPTIONS:
 EOF
 }
 
-export TITANIUM_SDK_VERSION="3.5.0.GA"
-export TITANIUM_ANDROID_API="21"
+export TITANIUM_SDK_VERSION="5.0.2.GA"
+export TITANIUM_ANDROID_API="23"
 while getopts ":h:s:a:" OPTION
 do
      case $OPTION in
@@ -82,8 +82,8 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   if [ ! -d "$ANDROID_HOME" ]; then
 
     cd "$TITANIUM_ROOT/sdks/"
-    wget http://dl.google.com/android/android-sdk_r23.0.2-macosx.zip
-    unzip -qq -o android-sdk_r23.0.2-macosx.zip
+    wget http://dl.google.com/android/android-sdk_r24.0.1-macosx.zip
+    unzip -qq -o android-sdk_r24.0.1-macosx.zip
     ANDROID_HOME=${PWD}/android-sdk-macosx
     titanium config android.sdkPath $ANDROID_HOME
 
@@ -96,19 +96,7 @@ if [ -d "$MODULE_ROOT/android/" ]; then
 
   # Install required Android components.
   echo yes | android -s update sdk --no-ui --all --filter \
-    tools
-  echo yes | android -s update sdk --no-ui --all --filter \
-    platform-tools
-  echo yes | android -s update sdk --no-ui --all --filter \
-    extra-android-support 
-  echo yes | android -s update sdk --no-ui --all --filter \
-    android-8
-  echo yes | android -s update sdk --no-ui --all --filter \
-    android-10
-  echo yes | android -s update sdk --no-ui --all --filter \
-    android-$TITANIUM_ANDROID_API
-  echo yes | android -s update sdk --no-ui --all --filter \
-    addon-google_apis-google-$TITANIUM_ANDROID_API
+    tools,platform-tools,extra-android-support,android-8,android-10,android-$TITANIUM_ANDROID_API,addon-google_apis-google-$TITANIUM_ANDROID_API
     
   # NDK r8c
   echo
@@ -131,8 +119,8 @@ if [ -d "$MODULE_ROOT/android/" ]; then
   java_installed=$( grep "commonjs:\s*true" -c  $MODULE_ROOT/android/manifest )
   if [ $java_installed -gt 0 ]; then
     cd "$MODULE_ROOT"
-    wget http://support.apple.com/downloads/DL1572/en_US/JavaForOSX2014-001.dmg
-    MOUNTDIR=`hdiutil mount JavaForOSX2014-001.dmg | tail -1 | sed -n 's/.*\(\/Volumes\/Java.*\)/\1/p'`
+    wget http://support.apple.com/downloads/DL1572/en_US/javaforosx.dmg
+    MOUNTDIR=`hdiutil mount javaforosx.dmg | tail -1 | sed -n 's/.*\(\/Volumes\/Java.*\)/\1/p'`
     sudo installer -pkg "${MOUNTDIR}/JavaForOSX.pkg" -target /
   fi
   
