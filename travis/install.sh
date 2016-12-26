@@ -50,7 +50,6 @@ titanium sdk install latest --no-progress-bars
 echo
 echo "Installing $TITANIUM_SDK_VERSION"
 echo
-titanium sdk install -d $TITANIUM_SDK_VERSION --no-progress-bars
 
 export TITANIUM_ROOT=`ti sdk list -o json | jq -r '.defaultInstallLocation'`
 export TITANIUM_SDK=`ti sdk list -o json | jq -r '.installed[.activeSDK]'`
