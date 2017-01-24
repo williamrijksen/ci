@@ -91,7 +91,7 @@ else
 	  mkdir -p build/docs
 
 	  ant clean
-	  ti build -p android --no-prompt --no-progress --build-only
+	  ant
 
 	  let STATUS=$?
 	  if (( "$RETSTATUS" == "0" )) && (( "$STATUS" != "0" )); then
