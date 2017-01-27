@@ -62,7 +62,6 @@ else
 
 			#Build application but do not run simulator
 			echo "Build application"
-			ti build -b -p ios -d "./" —log-level info
 
 			let STATUS=$?
 
